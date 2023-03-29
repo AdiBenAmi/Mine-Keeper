@@ -7,13 +7,14 @@
     <title>Mine Keeper</title>
     <link rel="stylesheet" href="css/main.css">
 </head>
-<body onload="onInit()">
+<body onKeyup= onHandleKey(event) onload="onInit()">
     <h1>Mine Keeper</h1>
-    <table class = "board">
+    <table  class = "board">
         <tbody class="board-cells">
 
         </tbody>
     </table>
+    <h4>Made by Adi Ben-Ami</h4>
     
     <script src="js/game.js"></script>
     <script src="js/util.js"></script>

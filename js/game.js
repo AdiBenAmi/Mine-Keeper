@@ -1,6 +1,7 @@
 'use strict'
 var MINE = '💣'
 var EMPTY = ' '
+var FLAG = '🚩'
 var SIZE = 4
 
 
@@ -37,7 +38,7 @@ function buildBoard() {
         }
     }
     //console.log(board)
-    createMines(board) //after need to be change that it will creat after first click
+    addMines(board) //after need to be change that it will creat after first click
     setMinesNegsCount(board)
     return board
 }
@@ -63,7 +64,7 @@ function renderBoard() {
 
 
             strHTML += `\t<td class="hide cell ${className}" 
-                            onclick="cellClicked(this, ${i}, ${j})" > ${cellInnerText}
+                        oncontextmenu="cellRightClicked(this,${i}, ${j})" onclick="cellClicked(this, ${i}, ${j})" > ${cellInnerText}
                          </td>\n`
         }
         strHTML += `</tr>\n`
@@ -75,12 +76,18 @@ function renderBoard() {
     elCells.innerHTML = strHTML
 }
 
-function createMines(board) {
+function addMines(board) {
     //lets try manually
-    // board[0][0].isMine = true
-    // board[1][0].isMine = true
+    board[0][0].isMine = true
+    board[1][0].isMine = true
 
-    
+    //randomly
+    // for (var i = 0; i< gLevel.MINES ; i++) {
+    //     var emptyLocation = getEmptyLocation(board)
+    //     console.log('emptyLocation:', emptyLocation)
+    //     // //if (!emptyLocation) return
+    //     board[emptyLocation.i][emptyLocation.j].isMine = true
+    // }
 }
 
 function creatCell() {
@@ -101,7 +108,20 @@ function setMinesNegsCount(board) {
     }
 }
 
-function hideContent() {
-
+function gameOver() {
+    console.log('game over')
+    var elMines = document.querySelectorAll('.mine')
+    for (var i = 0; i<elMines.length; i++) {
+        elMines[i].classList.remove('hide')
+    }
+    //TODO: cant click on board anymore
 }
+
+function checkVictry(){
+    if (gGame.markedCount + gGame.shownCount === SIZE**2) {
+        console.log('YOU WON!!')
+    }
+}
+
+
 
