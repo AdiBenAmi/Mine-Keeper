@@ -1,0 +1,32 @@
+body{
+    text-align: center;
+}
+
+
+table {
+    height: 200px;
+    width: 200px;
+    margin: auto;
+
+}
+
+.board-cells {
+    border-collapse:separate;
+    border-spacing: 6px;
+    text-align: center;
+}
+
+
+td {
+    width: 40px;
+    height: 40px;
+    border-radius: .5em;
+    border: 2px solid gray;
+    /* transform: rotateY(180deg) */
+    
+}
+
+.hide {
+    background-color: #F6B26B;
+    color: transparent;
+}
