@@ -2,7 +2,7 @@
 var MINE = '💣'
 var EMPTY = ' '
 var FLAG = '🚩'
-var SIZE = 4
+//var SIZE = 12
 var LIVES = '❤️'
 var TOTAL_LIVES
 
@@ -13,31 +13,49 @@ var gLevel
 var gTimer
 var gEmptyLocations
 
-function onInit() {
-    gLevel = {
-        SIZE: SIZE,
-        MINES: 2
-    }
+console.log('gEmptyLocations:', gEmptyLocations)
 
-    gGame = {
-        isOn: false,
-        isFirstClick: true,
-        shownCount: 0,
-        markedCount: 0,
-        secsPassed: 0, 
-        lives: 3,
-        isVictory: false,
-    }
-    
+gLevel = {
+    SIZE: 12,
+    MINES: 32, 
+    lives: 3
+}
+
+gGame = {
+    isOn: false,
+    isFirstClick: true,
+    shownCount: 0,
+    markedCount: 0,
+    secsPassed: 0,
+    livesCount: gLevel.lives,
+    isVictory: false,
+}
+
+
+function onInit() {
+    // gGame.isFirstClick = true
     gBoard = buildBoard()
     console.log('gBoard', gBoard)
     renderBoard(gBoard)
-    getEmptyLocation(gBoard)
+    getEmptyLocations(gBoard)
+    console.log('gEmptyLocations:', gEmptyLocations)
+    
     gGame.isOn = true
+    gGame.shownCount = 0
+    gGame.markedCount = 0
+    gGame.isVictory = false
+    gGame.isFirstClick = true
+    gGame.secsPassed = 0
+    gGame.livesCount= gLevel.lives
+
     renderLives()
     renderSmileyBtn()
-    
-   
+
+    //console.log('gGame.secsPassed:', gGame.secsPassed)
+
+    const elTimer = document.querySelector('.timer-container')
+    elTimer.innerText = gGame.secsPassed
+
 }
 
 function buildBoard() {
@@ -74,7 +92,7 @@ function renderBoard() {
             }
             //console.log('cell.minesAroundCount:', cell.minesAroundCount)
             strHTML += `\t<td class="hide cell-${i}-${j} ${className}" 
-                        oncontextmenu="onCellMarked(event,this,${i}, ${j})" onclick="cellClicked(this, ${i}, ${j})" > ${cellInnerText}
+                        oncontextmenu="onCellMarked(event,this,${i}, ${j})" onclick="onCellClicked(this, ${i}, ${j})" > ${cellInnerText}
                          </td>\n`
         }
         strHTML += `</tr>\n`
@@ -88,8 +106,12 @@ function renderBoard() {
 
 function renderLives() {
     var msg = 'Lives '
-    var TOTAL_LIVES = LIVES.repeat(gGame.lives)
-    if (gGame.lives === 0) msg = 'Maybe next time'
+    var TOTAL_LIVES = LIVES.repeat(gGame.livesCount)
+    console.log('TOTAL_LIVES:', TOTAL_LIVES)
+    console.log(gGame.livesCount)
+    console.log('gLevel.lives',gLevel.lives )
+
+    if (gGame.livesCount === 0) msg = 'Maybe next time'
     // console.log('TOTAL_LIVES:', TOTAL_LIVES)
     var strHTML = `<h3>${msg} ${TOTAL_LIVES}</h3>`
 
@@ -102,10 +124,10 @@ function renderSmileyBtn() {
     var strHTML = `<img src="pic/happy.jpg"></img>`
     // console.log('isVictory:', isVictory)
     if (gGame.lives === 0) {
-        console.log('hello')
+        //console.log('hello')
         strHTML = `<img src="pic/sad.jpeg"></img>`
     } else if (gGame.isVictory) {
-        strHTML=`<img src="pic/win.png"></img>`
+        strHTML = `<img src="pic/win.png"></img>`
     }
 
     const elImg = document.querySelector('.restart-container')
@@ -114,18 +136,18 @@ function renderSmileyBtn() {
 
 
 function addMines(board) {
-    //lets try manually
-    board[0][0].isMine = true
-    board[1][0].isMine = true
+    //manually
+    // board[0][0].isMine = true
+    // board[1][0].isMine = true
     // board[2][0].isMine = true
 
     //randomly
-    // for (var i = 0; i< gLevel.MINES ; i++) {
-    //     var emptyLocation = getEmptyLocation(board)
-    //     console.log('emptyLocation:', emptyLocation)
-    //     // //if (!emptyLocation) return
-    //     board[emptyLocation.i][emptyLocation.j].isMine = true
-    // }
+    for (var i = 0; i < gLevel.MINES; i++) {
+        var emptyLocation = drawNum(gEmptyLocations)
+        console.log('emptyLocation:', emptyLocation)
+        if (!emptyLocation) return
+        board[emptyLocation.i][emptyLocation.j].isMine = true
+    }
 }
 
 function creatCell() {
@@ -175,14 +197,16 @@ function gameOver() {
     for (var i = 0; i < elMines.length; i++) {
         elMines[i].classList.remove('hide')
     }
-    resetTimer()
+    stopGame()
 }
 
 function checkVictry() {
-    if (gGame.markedCount + gGame.shownCount === SIZE ** 2) {
+    // console.log('is it victory?')
+    if (gGame.markedCount + gGame.shownCount === gLevel.SIZE ** 2) {
         console.log('YOU WON!!')
         gGame.isVictory = true
-        
+        renderSmileyBtn()
+        if (gGame.isVictory) stopGame()
     }
 }
 
@@ -191,23 +215,23 @@ function removeClassHide(elCell) {
 }
 
 function setTimer() {
-    gTimer = setInterval(()=> {
+    gTimer = setInterval(() => {
         //MODEL
         gGame.secsPassed++
-        console.log('gGame.secsPassed', gGame.secsPassed)
+        // console.log('gGame.secsPassed', gGame.secsPassed)
 
         //DOM
         const elTimer = document.querySelector('.timer-container')
         elTimer.innerText = gGame.secsPassed
     }, 1000)
+    //console.log('gGame.secsPassed:', gGame.secsPassed)
 }
 
-function resetTimer() {
+function stopGame() {
+    console.log('game stopped')
     clearInterval(gTimer)
-    gGame.secsPassed = 0
-    //DOM
-    const elTimer = document.querySelector('.timer')
-    elTimer.innerText = 0
+    gGame.isOn = false
+    // gGame.isFirstClick = true
 }
 
 

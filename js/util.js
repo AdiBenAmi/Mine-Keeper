@@ -13,20 +13,14 @@ function countNeighbors(cellI, cellJ, mat) {
     return minesAroundCount
 }
 
-
-function getEmptyLocation(board) {
+//this stage all mat is inside
+function getEmptyLocations(board) {
     gEmptyLocations = []
     for (var i = 0; i < board.length; i++) {
         for (var j = 0; j < board[0].length; j++) {
-            if (!board[i][j].isMine ) {  //&& !board[i][j.isShown]
-                gEmptyLocations.push({ i, j })
-            }
+             gEmptyLocations.push({ i, j })
         }
     }
-    if (!gEmptyLocations.length) return null
-    // console.log('empty:', gEmptyLocations)
-    var randIdx = getRandomInt(0, gEmptyLocations.length + 1)
-    return gEmptyLocations[randIdx]
 }
 
 //get random int ex
@@ -36,3 +30,9 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
 }
 
+function drawNum(gNums) {
+    var randIdx = getRandomInt(0, gNums.length)
+    var num = gNums[randIdx]
+    gNums.splice(randIdx, 1)
+    return num
+}

@@ -1,12 +1,9 @@
 'use strict'
 
 
-function cellClicked(elCell, i, j) {
+function onCellClicked(elCell, i, j) {
     if(!gGame.isOn) return
     const cell = gBoard[i][j]
-
-    // console.log('elcell', elCell) //element
-    // console.log('cell', cell) //object cell
 
     if (gGame.isFirstClick){
         setTimer()
@@ -16,60 +13,40 @@ function cellClicked(elCell, i, j) {
         addMines(gBoard)
         setMinesNegsCount(gBoard)
         renderBoard(gBoard)
-
         //cell that was removed needs to be hide after render
         var elCurrCell = document.querySelector(`.cell-${i}-${j}`)
         elCurrCell.classList.remove('hide')
     }
 
     if (cell.isShown) return //the cell on second click is shown
+    if (cell.isMarked) return
 
-    if (!cell.isMarked || !cell.isMine) {
+    if (!cell.isMarked) {
         cell.isShown = true
         removeClassHide(elCell)
-        checkVictry()
-        gGame.shownCount++
-    }
-
-    if (cell.minesAroundCount === 0 && cell.isMine === false) {
-        expandShown(gBoard, elCell, i, j)
-    }
-
-    console.log('gGame.markedCount:', gGame.markedCount)
-    console.log('gGame.shownCount:', gGame.shownCount)
-    //console.log('gBoard:', gBoard)
-
-    if (cell.isMarked) return
-    if (cell.isMine) {
-        elCell.style.backgroundColor = '#ff0000'
-        gGame.lives--
-        renderLives()
-        renderSmileyBtn()
         gGame.shownCount++
         checkVictry()
 
-        if (gGame.lives === 0) {
-            setTimeout(gameOver, 200)
+        if (cell.isMine) {
+            elCell.style.backgroundColor = '#ff0000'
+            gGame.livesCount--
+            renderLives()
+            renderSmileyBtn()
+            
+            if (gGame.livesCount === 0) {
+                clearInterval(gTimer)
+                gGame.isOn = false
+                setTimeout(gameOver, 200)
+            }   
         }
     }
 
-    //gGame.isOn = true
-
-    // if (gGame.isFirstClick) {
-    //     console.log('stuck1')  
-    //     var elCurrCell = document.querySelector(`.cell-${i}-${j}`)
-    //     // elCurrCell.classList
-    //     // elCell.classList.remove('hide')      
-    //     //removeClassHide(elCurrCell)
-
-    //     console.log('gBoard:', gBoard)
-    //     gGame.isFirstClick = false
-    //     console.log('stuck2')        
-    // }
-    // if(!gGame.isOn) return
-
-    //gGame.isOn = true
-
+    if (cell.minesAroundCount === 0 && !cell.isMine) {
+        expandShown(gBoard, elCell, i, j)
+    }
+    // console.log('gGame.markedCount:', gGame.markedCount)
+    // console.log('gGame.shownCount:', gGame.shownCount)
+    checkVictry()
 }
 
 function onCellMarked(event, elCell, i, j) {
@@ -84,7 +61,7 @@ function onCellMarked(event, elCell, i, j) {
         if (cell.isMine) {
             gGame.markedCount++
         }
-        checkVictry()
+        
         console.log('gGame.markedCount:', gGame.markedCount)
 
         //DOM
@@ -97,7 +74,12 @@ function onCellMarked(event, elCell, i, j) {
         elCell.innerText = cell.minesAroundCount
         //MODEL
         cell.isMarked = false
+
+        if (cell.isMine) {
+            gGame.markedCount--
+        }
     }
+    checkVictry()
 }
 
 function expandShown(board, elCell, cellI, cellJ) {
@@ -114,10 +96,12 @@ function expandShown(board, elCell, cellI, cellJ) {
             const currCellNeg = board[i][j]
             const elCurrCellNeg = document.querySelector(`.cell-${i}-${j}`)
             removeClassHide(elCurrCellNeg)
-            // if (elCell.minesAroundCount === 0) {
             currCellNeg.isShown = true
             gGame.shownCount++
-            // }
+
+            if (currCellNeg.minesAroundCount === 0) {
+                //maybe next time :)
+            }
         }
     }
 }
