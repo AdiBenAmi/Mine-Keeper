@@ -1,34 +1,44 @@
 body{
     text-align: center;
+    background-color: #fbe7d0;
 }
 
 img {
-    height: 40px;
+    height: 50px;
     position: absolute;
-    margin-left: 190px;
+    margin-left: 170px;
     right: auto;
     top: 70px;
+    border: #a85c0a;
+   
 }
 
 .lives-container {
-    margin-left: -350px;
-    
+    margin-left: -320px;   
+}
+
+div h3 {
+    font-size:x-large;
 }
 
 .timer-container {
     background-color: #F6B26B;
     color: black;
     border: solid #d98730;
-    width: 50px;
-    height: 20px;
-    margin-bottom: 50px;
+    width: 60px;
+    line-height: 30px;
+    font-size: large;
+    font-weight: 700;
+    margin-bottom: 60px;
     margin: auto;
-    
+    vertical-align: middle;   
 }
 
 table {
     margin: auto;
     text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 td {
@@ -36,7 +46,6 @@ td {
     height: 30px;
     border: 2px solid rgb(227, 136, 17); 
     background-color: #d98730;
-
 }
 
 .hide {
@@ -47,9 +56,34 @@ td {
 button {
     margin-top: 20px;
     margin-left: 10px;
-    height: 25px;
+    line-height: 30px;
+    height: 40px;
+    width: 80px;
+    margin-bottom: 50px;
     border-radius: 5px;
+    border: black;
+    font-size:medium;
+    letter-spacing: .4px;
+    font-weight: 700;
+    cursor: pointer;
+    background-image: linear-gradient(135deg, #d393a7 40%, #fc894d);
+    box-sizing: border-box;   
 }
+
 footer {
-    margin-top: 40px;
-}
+    width: 100%;
+    margin: auto;
+    position: absolute;
+    text-align: center;
+    line-height: 60px;
+    background-color: #ffdebb;
+    bottom: 0px;
+    font-size:medium;
+    letter-spacing: .7px;
+    font-weight: 700;
+} 
+
+
+
+
+

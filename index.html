@@ -8,20 +8,26 @@
     <link rel="stylesheet" href="css/main.css">
 </head>
 <body onKeyup= onHandleKey(event) onload="onInit()">
-    <h1>Mine Keeper</h1>
-    <div class = 'lives-container'></div>
-    <div class = 'restart-container' onclick="onInit()"></div>
-    <div class = 'timer-container'></div>
-    <table  class = "board">
-        <tbody class="board-cells">
+    <div class="main-container">
+        <h1>Minesweeper</h1>
+        <div class = 'lives-container'></div>
+        <div class = 'restart-container' onclick="onInit()"></div>
+        <div class = 'timer-container'></div>
+        <div>
+            <table  class = "board">
+                <tbody class="board-cells">
+        
+                </tbody>
+            </table>
+        </div>
+    
+        <button onclick="onBigginer()">Biginner</button>
+        <button onclick="onMedium()">Medium</button>
+        <button onclick="onExpert()">Expert</button>
+        <footer>Made by Adi Ben-Ami</footer>
 
-        </tbody>
-    </table>
 
-    <button onclick="onBigginer()">Biginner</button>
-    <button onclick="onMedium()">Medium</button>
-    <button onclick="onExpert()">Expert</button>
-    <footer>Made by Adi Ben-Ami</footer>
+    </div>
     
     <script src="js/game.js"></script>
     <script src="js/util.js"></script>

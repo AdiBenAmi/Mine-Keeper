@@ -99,9 +99,9 @@ function expandShown(board, elCell, cellI, cellJ) {
             currCellNeg.isShown = true
             gGame.shownCount++
 
-            if (currCellNeg.minesAroundCount === 0) {
-                //maybe next time :)
-            }
+            // if (currCellNeg.minesAroundCount === 0) {
+            //     //maybe next time :)
+            // }
         }
     }
 }

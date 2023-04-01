@@ -2,7 +2,6 @@
 var MINE = '💣'
 var EMPTY = ' '
 var FLAG = '🚩'
-//var SIZE = 12
 var LIVES = '❤️'
 var TOTAL_LIVES
 
@@ -121,9 +120,9 @@ function renderLives() {
 }
 
 function renderSmileyBtn() {
-    var strHTML = `<img src="pic/happy.jpg"></img>`
+    var strHTML = `<img src="pic/happy.png"></img>`
     // console.log('isVictory:', isVictory)
-    if (gGame.lives === 0) {
+    if (gGame.livesCount === 0) {
         //console.log('hello')
         strHTML = `<img src="pic/sad.jpeg"></img>`
     } else if (gGame.isVictory) {
